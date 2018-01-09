@@ -164,7 +164,8 @@ void MarkRebel(int client)
 {
 	if (!g_bIsMarkedRebel[client])
 	{
-		SetEntityRenderColor(client, 255, 165, 0, 255);
+		SetEntityRenderColor(client, 10, 91, 45, 255);
+		AttachParticle(client, "unusual_zap_green", GetConVarFloat(convar_RebelTimer), "effect_hand_R");
 		g_bIsMarkedRebel[client] = true;
 		CPrintToChat(client, "%s You have been marked as a rebel.", g_sGlobalTag);
 

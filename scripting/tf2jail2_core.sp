@@ -42,7 +42,7 @@ Handle g_hudSpyNames;
 
 public Plugin myinfo =
 {
-	name = "[TF2Jail2] Module: Bans",
+	name = "[TF2Jail2] Module: Core",
 	author = "Keith Warren (Sky Guardian)",
 	description = "The core systems for TF2 Jailbreak.",
 	version = "1.0.0",
@@ -77,6 +77,18 @@ public void OnPluginStart()
 	RegAdminCmd("sm_testtextformat", Command_TestTextFormat, ADMFLAG_ROOT);
 	RegAdminCmd("sm_holyshit", Command_HolyShit, ADMFLAG_ROOT);
 }
+
+public void OnMapStart()
+{
+	SetConVarInt(FindConVar("mp_stalemate_enable"), 0);
+	SetConVarInt(FindConVar("tf_arena_use_queue"), 0);
+	SetConVarInt(FindConVar("mp_teams_unbalance_limit"), 0);
+	SetConVarInt(FindConVar("mp_autoteambalance"), 0);
+	SetConVarInt(FindConVar("tf_arena_first_blood"), 0);
+	SetConVarInt(FindConVar("mp_scrambleteams_auto"), 0);
+	SetConVarInt(FindConVar("phys_pushscale"), 1000);
+	SetConVarInt(FindConVar("mp_autoteambalance"), 0);
+}	
 
 public Action Command_TestTextFormat(int client, int args)
 {
@@ -198,15 +210,6 @@ public void Event_OnRoundStart(Event event, const char[] name, bool dontBroadcas
 
 	g_iTimer = 0;
 	KillTimerSafe(g_hTimer);
-
-	if (GetClientCount(true) >= 3)
-	{
-		CreateTimer(1.0, Timer_Ratios, _, TIMER_FLAG_NO_MAPCHANGE);
-	}
-	else
-	{
-		CPrintToChatAll("%s Autobalance is disabled this round. (3 players required)", g_sGlobalTag);
-	}
 }
 
 public Action Timer_Ratios(Handle timer)
@@ -256,6 +259,15 @@ public void Event_OnRoundActive(Event event, const char[] name, bool dontBroadca
 
 	KillTimerSafe(g_hTimer);
 	g_hTimer = CreateTimer(1.0, Timer_ShowTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	
+	if (GetClientCount(true) >= 3)
+	{
+		CreateTimer(1.0, Timer_Ratios, _, TIMER_FLAG_NO_MAPCHANGE);
+	}
+	else
+	{
+		CPrintToChatAll("%s Autobalance is disabled this round. (3 players required)", g_sGlobalTag);
+	}
 }
 
 public Action Timer_ShowTimer(Handle timer, any data)
@@ -352,6 +364,88 @@ public void Frame_KillWeapons(any data)
 
 	TF2Attrib_SetByName(client, "effect bar recharge rate increased", 0.75);
 	TF2Attrib_SetByName(client, "mod see enemy health", 1.0);
+}
+
+// ty astrak
+
+public void ClearPlayerWeapons(int client)
+{
+	// Remove different slots depending on the class of the player
+	switch (TF2_GetPlayerClass(client))
+	{
+		case TFClass_Scout:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Soldier:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Pyro:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_DemoMan:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Heavy:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Engineer:
+		{
+			RemovePlayerWeapon(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Medic:
+		{
+			RemovePlayerWeapon(client, 0);
+		}
+		case TFClass_Sniper:
+		{
+			RemovePlayerAmmo(client, 0);
+			RemovePlayerWeapon(client, 1);
+		}
+		case TFClass_Spy:
+		{
+			RemovePlayerWeapon(client, 0);
+		}
+	}
+}
+
+public void RemovePlayerWeapon(int client, int slot)
+{
+	RemovePlayerClip(client, slot);
+	RemovePlayerAmmo(client, slot);
+}
+
+public void RemovePlayerClip(int client, int slot)
+{
+	int iWeapon = GetPlayerWeaponSlot(client, slot);
+	
+	// Check that the slot actually contains a weapon before proceeding
+	if (!IsValidEntity(iWeapon))
+		return;
+	
+	SetEntProp(iWeapon, Prop_Send, "m_iClip1", 0);
+}
+
+public void RemovePlayerAmmo(int client, int slot)
+{
+	int iWeapon = GetPlayerWeaponSlot(client, slot);
+	
+	// Check that the slot actually contains a weapon before proceeding
+	if (!IsValidEntity(iWeapon))
+		return;
+	
+	int iAmmoType = GetEntProp(iWeapon, Prop_Send, "m_iPrimaryAmmoType");
+	SetEntProp(client, Prop_Data, "m_iAmmo", 0, _, iAmmoType);
 }
 
 public Action Listener_OnTeamChange(int client, const char[] command, int argc)

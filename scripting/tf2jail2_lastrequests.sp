@@ -367,7 +367,11 @@ public void Event_OnRoundStart(Event event, const char[] name, bool dontBroadcas
 		g_bNewMap = false;
 
 		ExecuteLastRequest(0, "Freeday For All First Day");
+		
+		TF2Jail2_LockWarden(true);
 	}
+	
+	TF2Jail2_LockWarden(false);
 
 	ExecuteLRCallback(g_sLRName, LR_CALLBACK_ROUNDSTART);
 
@@ -970,10 +974,11 @@ public int Native_GetCurrentLR(Handle plugin, int numParams)
 public void TF2Jail2_OnlastRequestRegistrations()
 {
 	TF2Jail2_RegisterLR("Custom Last Request", Custom_OnLRChosen, _, _, _);
-	TF2Jail2_RegisterLR("Freeday For All First Day", _, _, FreedayForAllFirstDay_OnLRRoundActive, FreedayForAllFirstDay_OnLRRoundEnd);
+	TF2Jail2_RegisterLR("Freeday For All First Day", _, FreedayForAllFirstDay_OnLRRoundStart, FreedayForAllFirstDay_OnLRRoundActive, FreedayForAllFirstDay_OnLRRoundEnd);
 	TF2Jail2_RegisterLR("Freeday For All No Warden", FreedayForAllNoWarden_OnLRChosen, _, _, FreedayForAllNoWarden_OnLRRoundEnd);
 	TF2Jail2_RegisterLR("Freeday For All", FreedayForAll_OnLRChosen, FreedayForAll_OnLRRoundStart, FreedayForAll_OnLRRoundActive, FreedayForAll_OnLRRoundEnd);
 	TF2Jail2_RegisterLR("Freeday For Some", FreedayForSome_OnLRChosen, FreedayForSome_OnLRRoundStart, FreedayForSome_OnLRRoundActive, FreedayForSome_OnLRRoundEnd);
+	TF2Jail2_RegisterLR("Freeday For You", FreedayForYou_OnLRChosen, FreedayForYou_OnLRRoundStart, FreedayForYou_OnLRRoundActive, FreedayForYou_OnLRRoundEnd);
 }
 
 //////////////////////////////////////////////////
@@ -988,6 +993,11 @@ public void Custom_OnLRChosen(int chooser)
 //////////////////////////////////////////////////
 //Freeday For All First Day
 
+public void FreedayForAllFirstDay_OnLRRoundStart(int chooser)
+{
+	TF2Jail2_LockWarden(true);
+}
+
 public void FreedayForAllFirstDay_OnLRRoundActive(int chooser)
 {
 	for (int i = 1; i <= MaxClients; i++)
@@ -996,11 +1006,12 @@ public void FreedayForAllFirstDay_OnLRRoundActive(int chooser)
 		{
 			PerformBlind(i, 255);
 			MakeClientFreeday(i, chooser, true);
-
+			
+			
 			TF2_AddCondition(i, TFCond_HalloweenKartNoTurn, 2.5, i);
 		}
 	}
-
+	
 	PrintCenterTextAll("Freeday for all is active! (First day freeday)");
 	CreateTimer(2.5, Timer_DeFade, _, TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -1014,6 +1025,8 @@ public void FreedayForAllFirstDay_OnLRRoundEnd(int chooser)
 			RemoveClientFreeday(i);
 		}
 	}
+	
+	TF2Jail2_LockWarden(false);
 }
 
 //////////////////////////////////////////////////
@@ -1028,11 +1041,13 @@ public void FreedayForAllNoWarden_OnLRChosen(int chooser)
 			PerformBlind(i, 255);
 			TF2_RespawnPlayer(i);
 			MakeClientFreeday(i, chooser);
+			
 
 			TF2_AddCondition(i, TFCond_HalloweenKartNoTurn, 2.5, i);
 		}
 	}
-
+	
+	TF2Jail2_UnlockCells(chooser);
 	PrintCenterTextAll("Freeday for all is active! (Warden MIA)");
 	CreateTimer(2.5, Timer_DeFade, _, TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -1075,9 +1090,12 @@ public void FreedayForAll_OnLRRoundActive(int chooser)
 		}
 	}
 
+	TF2Jail2_LockWarden(true);
+	
 	PrintCenterTextAll("Freeday for all is active!");
 	CreateTimer(5.0, Timer_DeFade, _, TIMER_FLAG_NO_MAPCHANGE);
 
+	TF2Jail2_UnlockCells(chooser);
 	CPrintToChatAll("%s {mediumslateblue}%N {default}has chosen a freeday for all this round.", g_sGlobalTag, chooser);
 }
 
@@ -1090,6 +1108,8 @@ public void FreedayForAll_OnLRRoundEnd(int chooser)
 			RemoveClientFreeday(i, -1, true);
 		}
 	}
+	
+	TF2Jail2_LockWarden(false);
 }
 
 //////////////////////////////////////////////////
@@ -1129,6 +1149,34 @@ public void FreedayForSome_OnLRRoundEnd(int chooser)
 	}
 }
 
+//////////////////////////////////////////////////
+//Freeday For You
+
+public void FreedayForYou_OnLRChosen(int chooser)
+{
+	
+}
+
+public void FreedayForYou_OnLRRoundStart(int chooser)
+{
+}
+
+public void FreedayForYou_OnLRRoundActive(int chooser)
+{
+	if (IsClientInGame(chooser) && IsPlayerAlive(chooser))
+	{
+		MakeClientFreeday(chooser, chooser, true);
+	}
+}
+
+public void FreedayForYou_OnLRRoundEnd(int chooser)
+{
+	if (IsClientInGame(chooser))
+	{
+		RemoveClientFreeday(chooser, -1, false);
+	}
+}
+
 //Everything Else
 
 public void Event_OnPlayerDeath(Event event, const char[] name, bool dontBroadcast)
@@ -1149,8 +1197,8 @@ void MakeClientFreeday(int client, int giver = -1, int announce = true)
 	float vecPosition[3];
 	GetClientAbsOrigin(client, vecPosition);
 
-	AttachParticle(client, "merasmus_zap_beam_bits", 2.0);
-	SetEntityRenderColor(client, 222, 224, 224, 255);
+	AttachParticle(client, "superrare_plasma1", 480.0, "effect_hand_R");
+	SetEntityRenderColor(client, 255, 135, 66, 255);
 	bHasFreeday[client] = true;
 
 	if (announce)
