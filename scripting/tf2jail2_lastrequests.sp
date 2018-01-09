@@ -1203,6 +1203,8 @@ public void HidenSeek_OnLRRoundActive(int chooser)
 			
 			if (!(flags & FL_FROZEN))
 				SetEntityFlags(i, (flags |= FL_FROZEN));
+				
+			SetEntProp(i, Prop_Data, "m_takedamage", 0, 1);
 		}
 	}
 	
@@ -1238,6 +1240,8 @@ public Action Timer_HnSCountdown(Handle timer)
 					SetEntityFlags(i, (flags &= ~FL_FROZEN));
 				
 				g_iInterval = 60;
+				
+				SetEntProp(i, Prop_Data, "m_takedamage", 2, 1);
 			}
 		}
 		
