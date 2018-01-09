@@ -1208,7 +1208,7 @@ public void HidenSeek_OnLRRoundActive(int chooser)
 		}
 	}
 	
-	TF2Jail2_UnlockCells(chooser);
+	TF2Jail2_ToggleCells(chooser, true, true);
 }
 
 public void HidenSeek_OnLRRoundEnd(int chooser)
