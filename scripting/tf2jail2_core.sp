@@ -42,7 +42,7 @@ Handle g_hudSpyNames;
 
 public Plugin myinfo =
 {
-	name = "[TF2Jail2] Module: Bans",
+	name = "[TF2Jail2] Module: Core",
 	author = "Keith Warren (Sky Guardian)",
 	description = "The core systems for TF2 Jailbreak.",
 	version = "1.0.0",
@@ -77,6 +77,18 @@ public void OnPluginStart()
 	RegAdminCmd("sm_testtextformat", Command_TestTextFormat, ADMFLAG_ROOT);
 	RegAdminCmd("sm_holyshit", Command_HolyShit, ADMFLAG_ROOT);
 }
+
+public void OnMapStart()
+{
+	SetConVarInt(FindConVar("mp_stalemate_enable"), 0);
+	SetConVarInt(FindConVar("tf_arena_use_queue"), 0);
+	SetConVarInt(FindConVar("mp_teams_unbalance_limit"), 0);
+	SetConVarInt(FindConVar("mp_autoteambalance"), 0);
+	SetConVarInt(FindConVar("tf_arena_first_blood"), 0);
+	SetConVarInt(FindConVar("mp_scrambleteams_auto"), 0);
+	SetConVarInt(FindConVar("phys_pushscale"), 1000);
+	SetConVarInt(FindConVar("mp_autoteambalance"), 0);
+}	
 
 public Action Command_TestTextFormat(int client, int args)
 {
@@ -198,15 +210,6 @@ public void Event_OnRoundStart(Event event, const char[] name, bool dontBroadcas
 
 	g_iTimer = 0;
 	KillTimerSafe(g_hTimer);
-
-	if (GetClientCount(true) >= 3)
-	{
-		CreateTimer(1.0, Timer_Ratios, _, TIMER_FLAG_NO_MAPCHANGE);
-	}
-	else
-	{
-		CPrintToChatAll("%s Autobalance is disabled this round. (3 players required)", g_sGlobalTag);
-	}
 }
 
 public Action Timer_Ratios(Handle timer)
@@ -256,6 +259,15 @@ public void Event_OnRoundActive(Event event, const char[] name, bool dontBroadca
 
 	KillTimerSafe(g_hTimer);
 	g_hTimer = CreateTimer(1.0, Timer_ShowTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	
+	if (GetClientCount(true) >= 3)
+	{
+		CreateTimer(1.0, Timer_Ratios, _, TIMER_FLAG_NO_MAPCHANGE);
+	}
+	else
+	{
+		CPrintToChatAll("%s Autobalance is disabled this round. (3 players required)", g_sGlobalTag);
+	}
 }
 
 public Action Timer_ShowTimer(Handle timer, any data)
