@@ -4,6 +4,7 @@
 #pragma newdecls required
 
 //Defines
+#define IS_PLUGIN
 
 //Sourcemod Includes
 #include <sourcemod>
@@ -88,7 +89,7 @@ public void OnMapStart()
 	SetConVarInt(FindConVar("mp_scrambleteams_auto"), 0);
 	SetConVarInt(FindConVar("phys_pushscale"), 1000);
 	SetConVarInt(FindConVar("mp_autoteambalance"), 0);
-}	
+}
 
 public Action Command_TestTextFormat(int client, int args)
 {
@@ -259,7 +260,7 @@ public void Event_OnRoundActive(Event event, const char[] name, bool dontBroadca
 
 	KillTimerSafe(g_hTimer);
 	g_hTimer = CreateTimer(1.0, Timer_ShowTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
-	
+
 	if (GetClientCount(true) >= 3)
 	{
 		CreateTimer(1.0, Timer_Ratios, _, TIMER_FLAG_NO_MAPCHANGE);
@@ -431,7 +432,7 @@ public Action Timer_ReplaceWeapon(Handle timer, any data)
 
 	if (IsValidEntity(entityIndex))
 	{
-		int iSlot = GetWeaponEntitySlot(client, entityIndex);
+		int iSlot = GetWeaponSlot(client, entityIndex);
 
 		RemovePlayerItem(client, entityIndex);
 		AcceptEntityInput(entityIndex, "Kill");

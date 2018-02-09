@@ -3,6 +3,7 @@
 #pragma newdecls required
 
 //Defines
+#define IS_PLUGIN
 
 //Sourcemod Includes
 #include <sourcemod>
