@@ -39,10 +39,10 @@ Handle g_hTimer_Cooldown;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Warden Menu",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "Allows access to a Warden menu with features for TF2 Jailbreaks Warden module.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public void OnPluginStart()
@@ -105,7 +105,7 @@ void ShowWardenMenu(int client, bool admin = false)
 		return;
 	}
 
-	Handle menu = CreateMenu(MenuHandler_WardenMenu);
+	Menu menu = CreateMenu(MenuHandler_WardenMenu);
 	SetMenuTitle(menu, "TF2Jail 2 - Warden Menu");
 
 	AddMenuItem(menu, "", "---", ITEMDRAW_DISABLED);

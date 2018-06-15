@@ -34,10 +34,10 @@ ConVar convar_Path;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Logging",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "A simple logging module for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public void OnPluginStart()

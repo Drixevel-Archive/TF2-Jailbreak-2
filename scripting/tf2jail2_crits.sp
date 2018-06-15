@@ -35,10 +35,10 @@ ConVar convar_BlueCrits;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Crits",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "A basic criticals module for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public void OnPluginStart()

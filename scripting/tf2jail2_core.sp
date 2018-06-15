@@ -44,10 +44,10 @@ Handle g_hudSpyNames;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Core",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "The core systems for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)

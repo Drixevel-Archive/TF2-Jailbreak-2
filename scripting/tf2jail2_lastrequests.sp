@@ -64,10 +64,10 @@ bool g_bNewMap;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Last Requests",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "Handles all last requests for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)

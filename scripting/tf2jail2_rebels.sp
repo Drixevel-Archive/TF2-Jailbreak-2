@@ -39,10 +39,10 @@ Handle g_hRebelTimer[MAXPLAYERS + 1];
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Rebels",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "Handles and keeps track of all rebels for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)

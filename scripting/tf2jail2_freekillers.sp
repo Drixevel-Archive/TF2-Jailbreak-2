@@ -38,10 +38,10 @@ bool g_bIsFreekiller[MAXPLAYERS + 1];
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Freekillers",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "A module to keep track of freekillers for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)

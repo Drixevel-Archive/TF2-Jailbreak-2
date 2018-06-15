@@ -37,10 +37,10 @@ bool g_bAreCellsLocked;
 public Plugin myinfo =
 {
 	name = "[TF2Jail2] Module: Map Triggers",
-	author = "Keith Warren (Sky Guardian)",
+	author = "Keith Warren (Shaders Allen)",
 	description = "Allows for manipuation of maps for TF2 Jailbreak.",
 	version = "1.0.0",
-	url = "https://github.com/SkyGuardian"
+	url = "https://www.shadersallen.com/"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
